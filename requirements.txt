@@ -11,5 +11,5 @@ python-pptx
 openpyxl
 pandas
 pillow
-speechrecognition
-pyaudio
+pydub
+ffmpeg
