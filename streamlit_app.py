@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit as st
 import openai
 import os
 from PIL import Image
@@ -247,35 +248,6 @@ st.markdown(
     '<cp class="subtitulo">Sou uma IA especializada em Administração Pública, reunindo estudos e documentos sobre Autoridades de Defesa da Concorrência. Fui desenvolvida pelo Instituto Publix em parceria com o Conselho Administrativo de Defesa Econômica (CADE) e estou aqui para ajudar.</p>',
     unsafe_allow_html=True
 )
-
-# 📌 Botão de reconhecimento de voz 🎤
-if st.button("🎙️ Falar"):
-    texto_falado = reconhecer_fala()
-    st.write(f"**🗣️ Você disse:** {texto_falado}")
-    if texto_falado not in ["⏳ Tempo de espera esgotado. Tente novamente.", "❌ Não foi possível entender o áudio.", "⚠ Erro ao conectar com o serviço de reconhecimento de fala."]:
-        resposta = gerar_resposta(texto_falado)
-        st.write(f"🤖 **CADE IA:** {resposta}")
-
-# Entrada de texto manual
-user_input = st.text_input("💬 Ou digite sua pergunta:")
-if user_input:
-    resposta = gerar_resposta(user_input)
-    st.write(f"🤖 **CADE IA:** {resposta}")
-
-
-# 📌 Botão de reconhecimento de voz 🎤
-if st.button("🎙️ Falar"):
-    texto_falado = reconhecer_fala()
-    st.write(f"**🗣️ Você disse:** {texto_falado}")
-    if texto_falado not in ["⏳ Tempo de espera esgotado. Tente novamente.", "❌ Não foi possível entender o áudio.", "⚠ Erro ao conectar com o serviço de reconhecimento de fala."]:
-        resposta = gerar_resposta(texto_falado)
-        st.write(f"🤖 **CADE IA:** {resposta}")
-
-# Entrada de texto manual
-user_input = st.text_input("💬 Ou digite sua pergunta:")
-if user_input:
-    resposta = gerar_resposta(user_input)
-    st.write(f"🤖 **CADE IA:** {resposta}")
 
 # Inicialização segura das variáveis de estado
 if "mensagens_chat" not in st.session_state:
