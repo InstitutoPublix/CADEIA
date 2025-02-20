@@ -13,3 +13,4 @@ pandas
 pillow
 pydub
 ffmpeg
+speechrecognition
