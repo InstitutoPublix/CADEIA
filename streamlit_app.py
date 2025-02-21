@@ -333,7 +333,7 @@ def gerar_resposta(texto_usuario):
     chunks = dividir_texto(contexto)  # Divide o texto em chunks
     chunks_relevantes = selecionar_chunks_relevantes(texto_usuario, chunks)  # Seleciona chunks relevantes
 
-    contexto_pergunta = "Você é uma IA feita pelo Publix em parceria com o CADE, que busca dar respostas especializadas sobre a Administração Pública e a instituição CADE, e. Responda com base no seguinte contexto:\n\n"
+    contexto_pergunta = "Você é uma IA feita pelo Publix em parceria com o CADE, que busca dar respostas especializadas sobre a Administração Pública e a instituição CADE, e. Responda sempre no formato markdown. Responda com base no seguinte contexto:\n\n"
     for i, chunk in enumerate(chunks_relevantes):
         contexto_pergunta += f"--- Parte {i+1} do Contexto ---\n{chunk}\n\n"
 
@@ -391,10 +391,10 @@ with st.container():
         for mensagem in st.session_state.mensagens_chat:
             if mensagem["user"]:
                 with st.chat_message("user"):
-                    st.write(f"*Você:* {mensagem['user']}")
+                    st.markdown(f"**Você:** {mensagem['user']}", unsafe_allow_html=True)
             if mensagem["bot"]:
                 with st.chat_message("assistant"):
-                    st.write(f"*CADE IA:* {mensagem['bot']}")
+                    st.markdown(f"**CADE IA:**\n\n{mensagem['bot']}", unsafe_allow_html=True)  # Permite Markdown
     else:
         with st.chat_message("assistant"):
-            st.write("*CADE IA:* Nenhuma mensagem ainda.")
+            st.markdown("*CADE IA:* Nenhuma mensagem ainda.", unsafe_allow_html=True)
