@@ -283,7 +283,7 @@ ARQUIVOS_CONTEXTO = [
     "contexto3.txt",
     "contexto4.txt",
     "contexto5.txt"
-
+]
 # Função para carregar os arquivos de contexto e armazenar em um dicionário
 def carregar_contexto():
     contexto = {}
