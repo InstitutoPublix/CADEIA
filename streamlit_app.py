@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import json
 import streamlit.components.v1 as components
-import speech_recognition as sr
+
 
 
 
@@ -276,17 +276,22 @@ def limpar_historico():
     st.session_state.mensagens_chat = []
     salvar_estado()
 
-# Carregar arquivos de texto nativos como contexto
+# Lista de arquivos de contexto
+ARQUIVOS_CONTEXTO = [
+    "contexto1.txt",
+    "contexto2.txt",
+    "contexto3.txt",
+    "contexto4.txt",
+    "contexto5.txt"
+
+# Função para carregar os arquivos de contexto e armazenar em um dicionário
 def carregar_contexto():
-    contexto = ""
-    # Adicione aqui os arquivos de texto que você deseja usar como contexto
-    arquivos_contexto = [
-        "contexto1.txt",
-        "contexto2.txt",
-        "contexto3.txt",
-        "contexto4.txt",
-        "contexto5.txt"
-    ]
+    contexto = {}
+    for arquivo in ARQUIVOS_CONTEXTO:
+        if os.path.exists(arquivo):
+            with open(arquivo, "r", encoding="utf-8") as f:
+                contexto[arquivo] = f.read()  # Armazena o conteúdo no dicionário
+    return contexto
 
     for arquivo in arquivos_contexto:
         if os.path.exists(arquivo):
@@ -297,8 +302,8 @@ def carregar_contexto():
     
     return contexto
 
-# Carregar o contexto ao iniciar o aplicativo
-contexto = carregar_contexto()
+# Carregar os arquivos ao iniciar o app
+documentos_contexto = carregar_contexto()
 
 # Função para encontrar a referência mais relevante
 def encontrar_fonte(pergunta):
