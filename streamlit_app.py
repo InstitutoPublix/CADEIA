@@ -396,10 +396,7 @@ user_input = st.chat_input("💬 Sua pergunta:")
 if user_input and user_input.strip():
     st.session_state.mensagens_chat.append({"user": user_input, "bot": None})
     resposta = gerar_resposta(user_input)
-     with st.chat_message("user"):
-        st.write(f"*Você:* {user_input}")
-    with st.chat_message("assistant"):
-        st.markdown(f"*CADE IA:* {resposta}")  # Exibe a resposta formatada com markdown
+    
     st.session_state.mensagens_chat[-1]["bot"] = resposta
     salvar_estado()  # Salva o estado após cada interação
 
