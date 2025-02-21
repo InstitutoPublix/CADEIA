@@ -339,7 +339,7 @@ def selecionar_chunks_relevantes(pergunta, chunks):
 
 # Função para gerar resposta com OpenAI usando GPT-4
 def gerar_resposta(texto_usuario):
-    if not contexto:
+    if not documentos_contexto:
         return "Erro: Nenhum contexto carregado."
 
     chunks = dividir_texto(contexto)  # Divide o texto em chunks
