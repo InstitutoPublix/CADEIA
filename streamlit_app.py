@@ -342,7 +342,7 @@ def gerar_resposta(texto_usuario):
     if not documentos_contexto:
         return "Erro: Nenhum contexto carregado."
 
-    chunks = dividir_texto(contexto)  # Divide o texto em chunks
+    chunks = dividir_texto(documentos_contexto)  # Divide o texto em chunks
     chunks_relevantes = selecionar_chunks_relevantes(texto_usuario, chunks)  # Seleciona chunks relevantes
 
     contexto_pergunta = "Você é uma IA feita pelo Publix em parceria com o CADE, que busca dar respostas especializadas sobre a Administração Pública e a instituição CADE, e. Responda sempre no formato markdown. Responda com base no seguinte contexto:\n\n"
