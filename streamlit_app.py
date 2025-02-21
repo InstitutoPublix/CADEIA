@@ -300,6 +300,13 @@ def carregar_contexto():
 # Carregar o contexto ao iniciar o aplicativo
 contexto = carregar_contexto()
 
+# Função para encontrar a referência mais relevante
+def encontrar_fonte(pergunta):
+    for arquivo, texto in documentos_contexto.items():
+        if pergunta.lower() in texto.lower():  # Se a pergunta estiver no texto do arquivo
+            return f"Fonte: **{arquivo}**"  # Retorna o nome do arquivo como fonte
+    return "Fonte: Documentação institucional do CADE."  # Caso não encontre, retorna uma fonte genérica
+
 # Função para dividir o texto em chunks
 def dividir_texto(texto, max_tokens=800):  # Chunks menores (800 tokens)
     palavras = texto.split()
