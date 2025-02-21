@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import json
 import streamlit.components.v1 as components
-
+import speech_recognition as sr
 
 
 
@@ -276,22 +276,17 @@ def limpar_historico():
     st.session_state.mensagens_chat = []
     salvar_estado()
 
-# Lista de arquivos de contexto
-ARQUIVOS_CONTEXTO = [
-    "contexto1.txt",
-    "contexto2.txt",
-    "contexto3.txt",
-    "contexto4.txt",
-    "contexto5.txt"
-]
-# Função para carregar os arquivos de contexto e armazenar em um dicionário
+# Carregar arquivos de texto nativos como contexto
 def carregar_contexto():
-    contexto = {}
-    for arquivo in ARQUIVOS_CONTEXTO:
-        if os.path.exists(arquivo):
-            with open(arquivo, "r", encoding="utf-8") as f:
-                contexto[arquivo] = f.read()  # Armazena o conteúdo no dicionário
-    return contexto
+    contexto = ""
+    # Adicione aqui os arquivos de texto que você deseja usar como contexto
+    arquivos_contexto = [
+        "contexto1.txt",
+        "contexto2.txt",
+        "contexto3.txt",
+        "contexto4.txt",
+        "contexto5.txt"
+    ]
 
     for arquivo in arquivos_contexto:
         if os.path.exists(arquivo):
@@ -302,15 +297,8 @@ def carregar_contexto():
     
     return contexto
 
-# Carregar os arquivos ao iniciar o app
-documentos_contexto = carregar_contexto()
-
-# Função para encontrar a referência mais relevante
-def encontrar_fonte(pergunta):
-    for arquivo, texto in documentos_contexto.items():
-        if pergunta.lower() in texto.lower():  # Se a pergunta estiver no texto do arquivo
-            return f"Fonte: **{arquivo}**"  # Retorna o nome do arquivo como fonte
-    return "Fonte: Documentação institucional do CADE."  # Caso não encontre, retorna uma fonte genérica
+# Carregar o contexto ao iniciar o aplicativo
+contexto = carregar_contexto()
 
 # Função para dividir o texto em chunks
 def dividir_texto(texto, max_tokens=800):  # Chunks menores (800 tokens)
@@ -339,10 +327,10 @@ def selecionar_chunks_relevantes(pergunta, chunks):
 
 # Função para gerar resposta com OpenAI usando GPT-4
 def gerar_resposta(texto_usuario):
-    if not documentos_contexto:
+    if not contexto:
         return "Erro: Nenhum contexto carregado."
 
-    chunks = dividir_texto(documentos_contexto)  # Divide o texto em chunks
+    chunks = dividir_texto(contexto)  # Divide o texto em chunks
     chunks_relevantes = selecionar_chunks_relevantes(texto_usuario, chunks)  # Seleciona chunks relevantes
 
     contexto_pergunta = "Você é uma IA feita pelo Publix em parceria com o CADE, que busca dar respostas especializadas sobre a Administração Pública e a instituição CADE, e. Responda sempre no formato markdown. Responda com base no seguinte contexto:\n\n"
@@ -366,19 +354,13 @@ def gerar_resposta(texto_usuario):
                 max_tokens=800  # Limita a resposta a 800 tokens
             )
             return resposta["choices"][0]["message"]["content"]
-        
-        # Buscar a fonte diretamente nos arquivos de contexto
-            fonte = encontrar_fonte(texto_usuario)
-
-            return f"{conteudo_resposta}\n\n🔍 {fonte}"  # Adiciona a fonte no final da resposta
-        
         except Exception as e:
             if tentativa < tentativas - 1:  # Se não for a última tentativa
                 time.sleep(2)  # Aguarda 2 segundos antes de tentar novamente
-                continue           
+                continue
             else:
                 return f"Erro ao gerar a resposta: {str(e)}"
-            
+
 # Adicionar a logo na sidebar
 if LOGO_BOT:
     st.sidebar.image(LOGO_BOT, width=300)  # Ajuste o tamanho conforme necessário
@@ -401,7 +383,6 @@ user_input = st.chat_input("💬 Sua pergunta:")
 if user_input and user_input.strip():
     st.session_state.mensagens_chat.append({"user": user_input, "bot": None})
     resposta = gerar_resposta(user_input)
-    
     st.session_state.mensagens_chat[-1]["bot"] = resposta
     salvar_estado()  # Salva o estado após cada interação
 
